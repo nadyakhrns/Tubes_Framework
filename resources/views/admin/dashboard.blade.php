@@ -4,19 +4,16 @@
 
         <div class="row g-4 mb-4">
             @foreach([
-                ['label' => 'Courses', 'value' => $stats['courses'], 'icon' => 'bi-book'],
-                ['label' => 'Approved', 'value' => $stats['approved_courses'], 'icon' => 'bi-check-circle'],
-                ['label' => 'Pending', 'value' => $stats['pending_courses'], 'icon' => 'bi-hourglass'],
-                ['label' => 'Instructors', 'value' => $stats['instructors'], 'icon' => 'bi-person-badge'],
+                ['label' => 'Courses', 'value' => $stats['courses']],
+                ['label' => 'Approved', 'value' => $stats['approved_courses']],
+                ['label' => 'Pending', 'value' => $stats['pending_courses']],
+                ['label' => 'Instructors', 'value' => $stats['instructors']],
             ] as $stat)
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-1">{{ $stat['label'] }}</h6>
-                                <h3 class="mb-0">{{ $stat['value'] }}</h3>
-                            </div>
-                            <i class="bi {{ $stat['icon'] }} fs-3 text-primary"></i>
+                        <div class="card-body">
+                            <h6 class="text-muted mb-1">{{ $stat['label'] }}</h6>
+                            <h3 class="mb-0">{{ $stat['value'] }}</h3>
                         </div>
                     </div>
                 </div>

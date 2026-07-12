@@ -5,23 +5,17 @@
         <div class="row g-4 mb-4">
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted mb-1">Enrolled Courses</h6>
-                            <h3 class="mb-0">{{ $stats['enrolled_courses'] }}</h3>
-                        </div>
-                        <i class="bi bi-journal-bookmark fs-3 text-primary"></i>
+                    <div class="card-body">
+                        <h6 class="text-muted mb-1">Enrolled Courses</h6>
+                        <h3 class="mb-0">{{ $stats['enrolled_courses'] }}</h3>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted mb-1">Overall Progress</h6>
-                            <h3 class="mb-0">{{ $stats['overall_progress'] }}%</h3>
-                        </div>
-                        <i class="bi bi-speedometer2 fs-3 text-success"></i>
+                    <div class="card-body">
+                        <h6 class="text-muted mb-1">Overall Progress</h6>
+                        <h3 class="mb-0">{{ $stats['overall_progress'] }}%</h3>
                     </div>
                 </div>
             </div>
