@@ -12,8 +12,16 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', 'sans-serif'],
+                mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
+            colors: {
+                aurora: {
+                    primary: '#0080FF',
+                    secondary: '#FF1493',
+                    tertiary: '#00FFFF',
+                }
+            }
         },
     },
 

@@ -14,16 +14,28 @@ use Illuminate\View\View;
 
 class CourseController extends Controller
 {
+    /**
+     * Menampilkan daftar course beserta detail relasi.
+     *
+     * - with(['category', 'instructor']): Eager load relasi untuk menghindari N+1 query.
+     * - withCount(['sections', 'lessons', 'enrollments']): Menambahkan kolom virtual
+     *   'sections_count', 'lessons_count', 'enrollments_count' tanpa memuat seluruh data relasi.
+     */
     public function index(): View
     {
         $courses = Course::query()
             ->with(['category', 'instructor'])
+            ->withCount(['sections', 'lessons', 'enrollments'])
             ->when(request('search'), fn ($query, $search) => $query->where('title', 'like', "%{$search}%"))
+            ->when(request('category_id'), fn ($query, $categoryId) => $query->where('category_id', $categoryId))
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.courses.index', compact('courses'));
+        // Kirim daftar kategori aktif untuk dropdown filter
+        $categories = Category::query()->where('is_active', true)->orderBy('name')->get();
+
+        return view('admin.courses.index', compact('courses', 'categories'));
     }
 
     public function create(): View

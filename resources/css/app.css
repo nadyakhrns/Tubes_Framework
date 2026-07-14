@@ -1,11 +1,20 @@
 :root {
-    --app-bg: #f5f7fb;
-    --app-border: #dde3ec;
-    --app-ink: #182230;
-    --app-muted: #667085;
-    --app-sidebar: #ffffff;
-    --app-accent: #2563eb;
-    --app-accent-soft: #e8f0ff;
+    /* Aurora UI Colors */
+    --app-primary: #0080FF;
+    --app-secondary: #FF1493;
+    --app-tertiary: #00FFFF;
+
+    /* Base Palette */
+    --app-bg: #f8fafc;
+    --app-border: rgba(226, 232, 240, 0.8);
+    --app-ink: #0f172a;
+    --app-muted: #64748b;
+    --app-sidebar: rgba(255, 255, 255, 0.7);
+    --app-accent: var(--app-primary);
+    --app-accent-soft: rgba(0, 128, 255, 0.1);
+    
+    /* Layout */
+    --radius-base: 12px;
 }
 
 * {
@@ -17,17 +26,65 @@ body {
     margin: 0;
     background: var(--app-bg);
     color: var(--app-ink);
-    font-family: Figtree, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
 a {
     text-decoration: none;
+    color: var(--app-primary);
+    transition: all 0.2s ease;
+}
+a:hover {
+    color: #0066cc;
 }
 
+/* ==========================================================================
+   Aurora Mesh Gradient Animation
+   ========================================================================== */
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes aurora-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.aurora-bg {
+    position: relative;
+    background-color: #f8fafc;
+    z-index: 0;
+}
+
+.aurora-bg::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 128, 255, 0.15), transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 20, 147, 0.12), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.15), transparent 50%);
+    background-size: 200% 200%;
+    animation: aurora-flow 12s ease-in-out infinite alternate;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Layout Shell & Glassmorphism
+   ========================================================================== */
 .app-shell {
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr);
     min-height: 100vh;
+    background: transparent;
 }
 
 .app-sidebar {
@@ -36,16 +93,57 @@ a {
     gap: 24px;
     border-right: 1px solid var(--app-border);
     background: var(--app-sidebar);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     padding: 24px 18px;
+    z-index: 100;
 }
 
-.brand-link,
-.auth-brand {
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 84px;
+    border-bottom: 1px solid var(--app-border);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 18px 28px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+.topbar h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.topbar-eyebrow {
+    margin: 0 0 3px;
+    color: var(--app-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+.brand-link, .auth-brand {
     display: inline-flex;
     align-items: center;
     gap: 12px;
     color: var(--app-ink);
     font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
 }
 
 .brand-mark {
@@ -54,9 +152,10 @@ a {
     justify-content: center;
     width: 40px;
     height: 40px;
-    border-radius: 8px;
-    background: var(--app-accent);
+    border-radius: var(--radius-base);
+    background: linear-gradient(135deg, var(--app-primary), var(--app-tertiary));
     color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
 }
 
 .sidebar-nav {
@@ -69,68 +168,116 @@ a {
     align-items: center;
     gap: 10px;
     min-height: 44px;
-    border-radius: 8px;
+    border-radius: var(--radius-base);
     color: #475467;
-    font-weight: 600;
-    padding: 10px 12px;
+    font-weight: 500;
+    padding: 10px 16px;
+    transition: all 0.2s ease;
 }
 
-.sidebar-link:hover,
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--app-ink);
+    transform: translateX(4px);
+}
+
 .sidebar-link.active {
-    background: var(--app-accent-soft);
-    color: var(--app-accent);
+    background: var(--app-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.25);
+    font-weight: 600;
 }
 
-.app-main {
-    min-width: 0;
-}
-
-.topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 84px;
-    border-bottom: 1px solid var(--app-border);
-    background: #ffffff;
-    padding: 18px 28px;
-}
-
-.topbar h1 {
-    margin: 0;
-    font-size: 1.35rem;
-    font-weight: 700;
-    letter-spacing: 0;
-}
-
-.topbar-eyebrow {
-    margin: 0 0 3px;
-    color: var(--app-muted);
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
+/* ==========================================================================
+   Components (Buttons, Cards, Inputs)
+   ========================================================================== */
 .content-area {
-    padding: 28px;
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.empty-dashboard {
-    min-height: 360px;
-    border: 1px dashed #c9d4e5;
-    border-radius: 8px;
-    background: #ffffff;
+.card {
+    border: 1px solid var(--app-border);
+    border-radius: calc(var(--radius-base) + 4px);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--app-border);
+    padding: 1.25rem 1.5rem;
+}
+
+.btn {
+    border-radius: var(--radius-base);
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--app-primary), #0066cc);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.25);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background: linear-gradient(135deg, #0073e6, #005bb5);
+    box-shadow: 0 6px 16px rgba(0, 128, 255, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    border: 1.5px solid var(--app-primary);
+    color: var(--app-primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--app-accent-soft);
+    color: var(--app-primary);
+    border-color: var(--app-primary);
+}
+
+.form-control, .form-select {
+    border-radius: var(--radius-base);
+    border: 1px solid var(--app-border);
+    padding: 0.6rem 1rem;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 4px var(--app-accent-soft);
+}
+
+/* ==========================================================================
+   User Menu
+   ========================================================================== */
 .user-menu {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     border: 1px solid var(--app-border);
-    border-radius: 8px;
-    background: #ffffff;
+    border-radius: var(--radius-base);
+    background: rgba(255, 255, 255, 0.8);
     color: var(--app-ink);
     font-weight: 600;
-    padding: 8px 10px;
+    padding: 6px 12px 6px 6px;
+    backdrop-filter: blur(8px);
 }
 
 .user-avatar {
@@ -140,12 +287,15 @@ a {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #eef4ff;
-    color: var(--app-accent);
+    background: linear-gradient(135deg, var(--app-secondary), var(--app-primary));
+    color: #ffffff;
     font-size: 0.9rem;
     font-weight: 700;
 }
 
+/* ==========================================================================
+   Auth Pages
+   ========================================================================== */
 .auth-page {
     display: grid;
     min-height: 100vh;
@@ -156,40 +306,29 @@ a {
 .auth-panel {
     width: min(100%, 440px);
     border: 1px solid var(--app-border);
-    border-radius: 8px;
-    background: #ffffff;
-    padding: 28px;
-}
-
-.auth-brand {
-    margin-bottom: 28px;
+    border-radius: calc(var(--radius-base) + 8px);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    padding: 40px;
 }
 
 .auth-title {
-    margin-bottom: 6px;
-    font-size: 1.5rem;
+    margin-bottom: 8px;
+    font-size: 1.75rem;
     font-weight: 700;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
 }
 
 .auth-subtitle {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     color: var(--app-muted);
 }
 
-.form-control,
-.form-check-input,
-.btn {
-    border-radius: 8px;
-}
-
-.btn-primary {
-    --bs-btn-bg: var(--app-accent);
-    --bs-btn-border-color: var(--app-accent);
-    --bs-btn-hover-bg: #1d4ed8;
-    --bs-btn-hover-border-color: #1d4ed8;
-}
-
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
 @media (max-width: 860px) {
     .app-shell {
         grid-template-columns: 1fr;
