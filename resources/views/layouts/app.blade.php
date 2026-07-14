@@ -34,14 +34,33 @@
                     <span>Skevva</span>
                 </a>
 
-                <nav class="sidebar-nav">
-                    <a href="{{ route($currentDashboard['name']) }}" @class(['sidebar-link', 'active' => request()->routeIs($currentDashboard['name'])])>
-                        <span>{{ $currentDashboard['label'] }}</span>
-                    </a>
-                    <a href="{{ route('profile.edit') }}" @class(['sidebar-link', 'active' => request()->routeIs('profile.*')])>
-                        <span>Profile</span>
-                    </a>
-                </nav>
+               <nav class="sidebar-nav">
+    <a href="{{ route($currentDashboard['name']) }}" @class(['sidebar-link', 'active' => request()->routeIs($currentDashboard['name'])])>
+        <span>{{ $currentDashboard['label'] }}</span>
+    </a>
+
+    @if($role === 'admin')
+        <a href="{{ route('admin.categories.index') }}" @class(['sidebar-link', 'active' => request()->routeIs('admin.categories.*')])>
+            <span>Categories</span>
+        </a>
+
+        <a href="{{ route('admin.courses.index') }}" @class(['sidebar-link', 'active' => request()->routeIs('admin.courses.*')])>
+            <span>Courses</span>
+        </a>
+
+        <a href="{{ route('admin.instructors.index') }}" @class(['sidebar-link', 'active' => request()->routeIs('admin.instructors.*')])>
+            <span>Instructors</span>
+        </a>
+
+        <a href="{{ route('admin.quizzes.index') }}" @class(['sidebar-link', 'active' => request()->routeIs('admin.quizzes.*')])>
+            <span>Quizzes</span>
+        </a>
+    @endif
+
+    <a href="{{ route('profile.edit') }}" @class(['sidebar-link', 'active' => request()->routeIs('profile.*')])>
+        <span>Profile</span>
+    </a>
+</nav>
             </aside>
 
             <div class="app-main">

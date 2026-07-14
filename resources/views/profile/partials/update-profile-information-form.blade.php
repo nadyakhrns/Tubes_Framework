@@ -47,6 +47,32 @@
             @endif
         </div>
 
+        @if(auth()->user()->role === 'admin')
+            <div>
+                <x-input-label for="role" :value="__('Role')" />
+
+                <select 
+                    id="role"
+                    name="role"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                >
+                    <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>
+                        Admin
+                    </option>
+
+                    <option value="instructor" {{ $user->role === 'instructor' ? 'selected' : '' }}>
+                        Instructor
+                    </option>
+
+                    <option value="student" {{ $user->role === 'student' ? 'selected' : '' }}>
+                        Student
+                    </option>
+                </select>
+
+                <x-input-error class="mt-2" :messages="$errors->get('role')" />
+            </div>
+        @endif
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
