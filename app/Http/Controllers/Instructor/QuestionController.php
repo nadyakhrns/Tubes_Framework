@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Instructor\QuestionRequest;
-use App\Models\Course;
 use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\RedirectResponse;
@@ -14,21 +13,19 @@ use Illuminate\View\View;
 class QuestionController extends Controller
 {
     /** Form tambah pertanyaan baru untuk quiz tertentu. */
-    public function create(Course $course, Quiz $quiz): View
+    public function create(Quiz $quiz): View
     {
-        $this->authorize('update', $course);
-        abort_unless($quiz->course_id === $course->id, 404);
+        $this->authorize('update', $quiz->course);
 
-        return view('instructor.quizzes.questions.create', compact('course', 'quiz'));
+        return view('instructor.quizzes.questions.create', compact('quiz'));
     }
 
     /**
      * Simpan Question + semua Options dalam 1 transaction.
      */
-    public function store(QuestionRequest $request, Course $course, Quiz $quiz): RedirectResponse
+    public function store(QuestionRequest $request, Quiz $quiz): RedirectResponse
     {
-        $this->authorize('update', $course);
-        abort_unless($quiz->course_id === $course->id, 404);
+        $this->authorize('update', $quiz->course);
 
         DB::transaction(function () use ($request, $quiz) {
             $question = $quiz->questions()->create([
@@ -45,29 +42,27 @@ class QuestionController extends Controller
         });
 
         return redirect()
-            ->route('instructor.courses.quizzes.show', [$course, $quiz])
+            ->route('instructor.quizzes.show', $quiz)
             ->with('success', 'Soal berhasil ditambahkan.');
     }
 
     /** Form edit pertanyaan beserta opsi-opsinya. */
-    public function edit(Course $course, Quiz $quiz, Question $question): View
+    public function edit(Quiz $quiz, Question $question): View
     {
-        $this->authorize('update', $course);
-        abort_unless($quiz->course_id === $course->id, 404);
+        $this->authorize('update', $quiz->course);
         abort_unless($question->quiz_id === $quiz->id, 404);
 
         $question->load('options');
 
-        return view('instructor.quizzes.questions.edit', compact('course', 'quiz', 'question'));
+        return view('instructor.quizzes.questions.edit', compact('quiz', 'question'));
     }
 
     /**
      * Update Question + semua Options (hapus lama, buat ulang).
      */
-    public function update(QuestionRequest $request, Course $course, Quiz $quiz, Question $question): RedirectResponse
+    public function update(QuestionRequest $request, Quiz $quiz, Question $question): RedirectResponse
     {
-        $this->authorize('update', $course);
-        abort_unless($quiz->course_id === $course->id, 404);
+        $this->authorize('update', $quiz->course);
         abort_unless($question->quiz_id === $quiz->id, 404);
 
         DB::transaction(function () use ($request, $question) {
@@ -87,21 +82,20 @@ class QuestionController extends Controller
         });
 
         return redirect()
-            ->route('instructor.courses.quizzes.show', [$course, $quiz])
+            ->route('instructor.quizzes.show', $quiz)
             ->with('success', 'Soal berhasil diperbarui.');
     }
 
     /** Hapus pertanyaan (options ikut terhapus via cascadeOnDelete). */
-    public function destroy(Course $course, Quiz $quiz, Question $question): RedirectResponse
+    public function destroy(Quiz $quiz, Question $question): RedirectResponse
     {
-        $this->authorize('update', $course);
-        abort_unless($quiz->course_id === $course->id, 404);
+        $this->authorize('update', $quiz->course);
         abort_unless($question->quiz_id === $quiz->id, 404);
 
         $question->delete();
 
         return redirect()
-            ->route('instructor.courses.quizzes.show', [$course, $quiz])
+            ->route('instructor.quizzes.show', $quiz)
             ->with('success', 'Soal berhasil dihapus.');
     }
 }

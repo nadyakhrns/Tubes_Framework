@@ -1,15 +1,15 @@
-<x-app-layout title="Buat Quiz — {{ $course->title }}">
+<x-app-layout title="Buat Quiz Baru">
     <div class="container-fluid py-4">
 
         <div class="mb-3">
-            <a href="{{ route('instructor.courses.quizzes.index', $course) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('instructor.quizzes.index') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali ke Daftar Quiz
             </a>
         </div>
 
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Buat Quiz Baru — <span class="text-primary">{{ $course->title }}</span></h5>
+                <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Buat Quiz Baru</h5>
             </div>
             <div class="card-body">
                 @if($errors->any())
@@ -22,8 +22,22 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('instructor.courses.quizzes.store', $course) }}">
+                <form method="POST" action="{{ route('instructor.quizzes.store') }}">
                     @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Course <span class="text-danger">*</span></label>
+                        <select name="course_id" class="form-select @error('course_id') is-invalid @enderror" required>
+                            <option value="">Pilih Course</option>
+                            @foreach($courses as $c)
+                                <option value="{{ $c->id }}" {{ old('course_id') == $c->id ? 'selected' : '' }}>
+                                    {{ $c->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('course_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <div class="form-text">Pilih course mana yang akan dihubungkan dengan quiz ini.</div>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">Judul Quiz <span class="text-danger">*</span></label>
@@ -68,7 +82,7 @@
 
                     <hr>
                     <button class="btn btn-primary"><i class="bi bi-check-lg"></i> Simpan Draft</button>
-                    <a href="{{ route('instructor.courses.quizzes.index', $course) }}" class="btn btn-outline-secondary">Batal</a>
+                    <a href="{{ route('instructor.quizzes.index') }}" class="btn btn-outline-secondary">Batal</a>
                 </form>
             </div>
         </div>

@@ -3,7 +3,7 @@
         <x-flash-message />
 
         <div class="mb-3">
-            <a href="{{ route('instructor.courses.quizzes.index', $course) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('instructor.quizzes.index') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali ke Daftar Quiz
             </a>
         </div>
@@ -27,7 +27,7 @@
                     <div>
                         <h4 class="mb-1">{{ $quiz->title }}</h4>
                         <p class="text-muted mb-1">
-                            <i class="bi bi-book"></i> Course: <strong>{{ $course->title }}</strong>
+                            <i class="bi bi-book"></i> Course: <strong>{{ $quiz->course?->title ?? '-' }}</strong>
                         </p>
                         @if($quiz->description)
                             <p class="text-muted mb-2">{{ $quiz->description }}</p>
@@ -47,13 +47,13 @@
 
                     {{-- Action Buttons --}}
                     <div class="d-flex gap-2 flex-wrap">
-                        <a href="{{ route('instructor.courses.quizzes.edit', [$course, $quiz]) }}"
+                        <a href="{{ route('instructor.quizzes.edit', $quiz) }}"
                            class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-pencil-square"></i> Edit Quiz
                         </a>
 
                         @if($quiz->isDraft() || $quiz->isRejected())
-                            <form action="{{ route('instructor.courses.quizzes.submit-review', [$course, $quiz]) }}"
+                            <form action="{{ route('instructor.quizzes.submit-review', $quiz) }}"
                                   method="POST" class="d-inline">
                                 @csrf
                                 @method('PATCH')
@@ -73,7 +73,7 @@
                         @endif
 
                         @unless($quiz->attempts()->exists())
-                            <form action="{{ route('instructor.courses.quizzes.destroy', [$course, $quiz]) }}"
+                            <form action="{{ route('instructor.quizzes.destroy', $quiz) }}"
                                   method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
@@ -91,7 +91,7 @@
         {{-- Questions Section --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5><i class="bi bi-list-ol"></i> Daftar Soal</h5>
-            <a href="{{ route('instructor.courses.quizzes.questions.create', [$course, $quiz]) }}"
+            <a href="{{ route('instructor.quizzes.questions.create', $quiz) }}"
                class="btn btn-primary btn-sm">
                 <i class="bi bi-plus-lg"></i> Tambah Soal
             </a>
@@ -128,11 +128,11 @@
                         </div>
 
                         <div class="d-flex gap-1 ms-3">
-                            <a href="{{ route('instructor.courses.quizzes.questions.edit', [$course, $quiz, $question]) }}"
+                            <a href="{{ route('instructor.quizzes.questions.edit', [$quiz, $question]) }}"
                                class="btn btn-sm btn-outline-primary" title="Edit Soal">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <form action="{{ route('instructor.courses.quizzes.questions.destroy', [$course, $quiz, $question]) }}"
+                            <form action="{{ route('instructor.quizzes.questions.destroy', [$quiz, $question]) }}"
                                   method="POST">
                                 @csrf
                                 @method('DELETE')

@@ -18,7 +18,7 @@ class LearningController extends Controller
         abort_unless($enrollment->course_id === $lesson->course_id, 404);
         $this->authorize('view', $lesson);
 
-        $course = $enrollment->course()->with(['sections' => fn ($query) => $query->with('lessons')->orderBy('order'), 'lessons'])->firstOrFail();
+        $course = $enrollment->course()->with(['sections' => fn ($query) => $query->with('lessons')->orderBy('order'), 'lessons', 'quizzes' => fn ($q) => $q->where('is_published', true)])->firstOrFail();
 
         $lessonProgress = LessonProgress::firstOrCreate([
             'user_id' => auth()->id(),

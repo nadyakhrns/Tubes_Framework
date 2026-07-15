@@ -97,41 +97,41 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
         Route::resource('courses.lessons', LessonController::class)
             ->middleware('role:'.User::ROLE_INSTRUCTOR);
 
-        // --- Quiz Management (Instructor: CRUD + Submit for Review) ---
+        // --- Quiz Management (Instructor: Top-level Resource) ---
         Route::middleware('role:'.User::ROLE_INSTRUCTOR)->group(function (): void {
-            Route::resource('courses.quizzes', InstructorQuizController::class);
+            Route::resource('quizzes', InstructorQuizController::class);
 
             // Submit for review
             Route::patch(
-                'courses/{course}/quizzes/{quiz}/submit-review',
+                'quizzes/{quiz}/submit-review',
                 [InstructorQuizController::class, 'submitForReview']
-            )->name('courses.quizzes.submit-review');
+            )->name('quizzes.submit-review');
 
-            // Question management (nested under quiz)
+            // Question management (nested under quiz only)
             Route::get(
-                'courses/{course}/quizzes/{quiz}/questions/create',
+                'quizzes/{quiz}/questions/create',
                 [InstructorQuestionController::class, 'create']
-            )->name('courses.quizzes.questions.create');
+            )->name('quizzes.questions.create');
 
             Route::post(
-                'courses/{course}/quizzes/{quiz}/questions',
+                'quizzes/{quiz}/questions',
                 [InstructorQuestionController::class, 'store']
-            )->name('courses.quizzes.questions.store');
+            )->name('quizzes.questions.store');
 
             Route::get(
-                'courses/{course}/quizzes/{quiz}/questions/{question}/edit',
+                'quizzes/{quiz}/questions/{question}/edit',
                 [InstructorQuestionController::class, 'edit']
-            )->name('courses.quizzes.questions.edit');
+            )->name('quizzes.questions.edit');
 
             Route::put(
-                'courses/{course}/quizzes/{quiz}/questions/{question}',
+                'quizzes/{quiz}/questions/{question}',
                 [InstructorQuestionController::class, 'update']
-            )->name('courses.quizzes.questions.update');
+            )->name('quizzes.questions.update');
 
             Route::delete(
-                'courses/{course}/quizzes/{quiz}/questions/{question}',
+                'quizzes/{quiz}/questions/{question}',
                 [InstructorQuestionController::class, 'destroy']
-            )->name('courses.quizzes.questions.destroy');
+            )->name('quizzes.questions.destroy');
         });
     });
 
@@ -156,6 +156,10 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
         Route::get('/my-courses', [MyCourseController::class, 'index'])
             ->middleware('role:'.User::ROLE_STUDENT)
             ->name('my-courses');
+
+        Route::get('/my-quizzes', [\App\Http\Controllers\Student\MyQuizController::class, 'index'])
+            ->middleware('role:'.User::ROLE_STUDENT)
+            ->name('my-quizzes');
 
         Route::get('/enrollments/{enrollment}/lessons/{lesson}', [LearningController::class, 'show'])
             ->middleware('role:'.User::ROLE_STUDENT)

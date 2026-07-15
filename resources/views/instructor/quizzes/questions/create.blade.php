@@ -2,7 +2,7 @@
     <div class="container-fluid py-4">
 
         <div class="mb-3">
-            <a href="{{ route('instructor.courses.quizzes.show', [$course, $quiz]) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('instructor.quizzes.show', $quiz) }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali ke {{ $quiz->title }}
             </a>
         </div>
@@ -22,7 +22,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('instructor.courses.quizzes.questions.store', [$course, $quiz]) }}">
+                <form method="POST" action="{{ route('instructor.quizzes.questions.store', $quiz) }}">
                     @csrf
 
                     {{-- Question Text --}}
@@ -76,7 +76,7 @@
 
                     <hr>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Simpan Soal</button>
-                    <a href="{{ route('instructor.courses.quizzes.show', [$course, $quiz]) }}" class="btn btn-outline-secondary">Batal</a>
+                    <a href="{{ route('instructor.quizzes.show', $quiz) }}" class="btn btn-outline-secondary">Batal</a>
                 </form>
             </div>
         </div>

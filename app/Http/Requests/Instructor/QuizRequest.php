@@ -14,6 +14,7 @@ class QuizRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'course_id'          => ['required', 'exists:courses,id'],
             'title'              => ['required', 'string', 'max:255'],
             'description'        => ['nullable', 'string'],
             'passing_score'      => ['required', 'integer', 'min:0', 'max:100'],

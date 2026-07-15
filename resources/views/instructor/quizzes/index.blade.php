@@ -1,26 +1,33 @@
-<x-app-layout title="Quiz — {{ $course->title }}">
+<x-app-layout title="My Quizzes">
     <div class="container-fluid py-4">
         <x-flash-message />
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h4><i class="bi bi-journal-check"></i> Quiz</h4>
-                <p class="text-muted mb-0"><i class="bi bi-book"></i> Course: <strong>{{ $course->title }}</strong></p>
+                <h4><i class="bi bi-journal-check"></i> Manajemen Quizzes</h4>
+                <p class="text-muted mb-0">Kelola semua quiz dari seluruh course Anda.</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('instructor.courses.quizzes.create', $course) }}" class="btn btn-primary btn-sm">
+                <a href="{{ route('instructor.quizzes.create') }}" class="btn btn-primary btn-sm">
                     <i class="bi bi-plus-lg"></i> Buat Quiz Baru
-                </a>
-                <a href="{{ route('instructor.courses.index') }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> Kembali ke Courses
                 </a>
             </div>
         </div>
 
         {{-- Filter --}}
         <form method="GET" class="row g-2 mb-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <input type="text" name="search" class="form-control" value="{{ request('search') }}" placeholder="Cari judul quiz...">
+            </div>
+            <div class="col-md-3">
+                <select name="course_id" class="form-select">
+                    <option value="">Semua Course</option>
+                    @foreach($courses as $c)
+                        <option value="{{ $c->id }}" {{ request('course_id') == $c->id ? 'selected' : '' }}>
+                            {{ $c->title }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
                 <select name="status" class="form-select">
@@ -33,7 +40,7 @@
             </div>
             <div class="col-auto">
                 <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i> Filter</button>
-                <a href="{{ route('instructor.courses.index') }}" class="btn btn-outline-secondary">Reset</a>
+                <a href="{{ route('instructor.quizzes.index') }}" class="btn btn-outline-secondary">Reset</a>
             </div>
         </form>
 
@@ -69,16 +76,16 @@
                                 <span class="badge bg-{{ $quiz->statusColor() }}">{{ $quiz->statusLabel() }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('instructor.courses.quizzes.show', [$quiz->course, $quiz]) }}"
+                                <a href="{{ route('instructor.quizzes.show', $quiz) }}"
                                    class="btn btn-sm btn-outline-info" title="Kelola Soal">
                                     <i class="bi bi-list-check"></i>
                                 </a>
-                                <a href="{{ route('instructor.courses.quizzes.edit', [$quiz->course, $quiz]) }}"
+                                <a href="{{ route('instructor.quizzes.edit', $quiz) }}"
                                    class="btn btn-sm btn-outline-primary" title="Edit">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 @unless($quiz->isPendingReview() || $quiz->isPublished())
-                                    <form action="{{ route('instructor.courses.quizzes.destroy', [$quiz->course, $quiz]) }}"
+                                    <form action="{{ route('instructor.quizzes.destroy', $quiz) }}"
                                           method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -94,7 +101,7 @@
                         <tr>
                             <td colspan="7" class="text-center text-muted py-4">
                                 <i class="bi bi-journal-x fs-3 d-block mb-2"></i>
-                                Belum ada quiz. Buka halaman course untuk membuat quiz baru.
+                                Belum ada quiz yang Anda buat.
                             </td>
                         </tr>
                     @endforelse

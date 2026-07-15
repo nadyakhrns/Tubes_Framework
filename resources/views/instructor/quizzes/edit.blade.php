@@ -2,7 +2,7 @@
     <div class="container-fluid py-4">
 
         <div class="mb-3">
-            <a href="{{ route('instructor.courses.quizzes.show', [$course, $quiz]) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('instructor.quizzes.show', $quiz) }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali ke Detail Quiz
             </a>
         </div>
@@ -32,9 +32,22 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('instructor.courses.quizzes.update', [$course, $quiz]) }}">
+                <form method="POST" action="{{ route('instructor.quizzes.update', $quiz) }}">
                     @csrf
                     @method('PUT')
+
+                    <div class="mb-3">
+                        <label class="form-label">Course <span class="text-danger">*</span></label>
+                        <select name="course_id" class="form-select @error('course_id') is-invalid @enderror" required>
+                            <option value="">Pilih Course</option>
+                            @foreach($courses as $c)
+                                <option value="{{ $c->id }}" {{ old('course_id', $quiz->course_id) == $c->id ? 'selected' : '' }}>
+                                    {{ $c->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('course_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">Judul Quiz <span class="text-danger">*</span></label>
@@ -70,7 +83,7 @@
 
                     <hr>
                     <button class="btn btn-primary"><i class="bi bi-check-lg"></i> Simpan Perubahan</button>
-                    <a href="{{ route('instructor.courses.quizzes.show', [$course, $quiz]) }}" class="btn btn-outline-secondary">Batal</a>
+                    <a href="{{ route('instructor.quizzes.show', $quiz) }}" class="btn btn-outline-secondary">Batal</a>
                 </form>
             </div>
         </div>
