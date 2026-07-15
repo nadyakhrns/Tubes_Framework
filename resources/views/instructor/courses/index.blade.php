@@ -40,6 +40,9 @@
                                 <a href="{{ route('instructor.courses.edit', $course) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                 <a href="{{ route('instructor.courses.sections.index', $course) }}" class="btn btn-sm btn-outline-secondary">Sections</a>
                                 <a href="{{ route('instructor.courses.lessons.index', $course) }}" class="btn btn-sm btn-outline-secondary">Lessons</a>
+                                <a href="{{ route('instructor.courses.quizzes.index', $course) }}" class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-journal-check"></i> Quizzes
+                                </a>
                                 <form action="{{ route('instructor.courses.destroy', $course) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')

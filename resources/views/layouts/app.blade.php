@@ -54,7 +54,7 @@
     <aside class="app-sidebar">
 
         <a href="{{ route('dashboard') }}" class="brand-link">
-            <span class="brand-mark">S</span>
+            <img src="{{ asset('images/logo.png') }}" alt="Skevva Logo" style="height: 32px; width: auto; object-fit: contain;">
             <span>Skevva</span>
         </a>
 

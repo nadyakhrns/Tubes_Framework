@@ -957,7 +957,7 @@
         <nav class="lp-navbar" id="navbar">
             <div class="container-lp">
                 <a href="/" class="lp-logo">
-                    <span class="lp-logo-icon" style="font-weight:900;font-size:1.1rem;">S</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Skevva Logo" style="height: 40px; width: auto; object-fit: contain;">
                     Skevva
                 </a>
 
@@ -1177,7 +1177,7 @@
                 <div class="footer-grid">
                     <div class="footer-brand">
                         <a href="/" class="lp-logo" style="font-size: 1.2rem;">
-                            <span class="lp-logo-icon" style="width:36px; height:36px; font-weight:900; font-size:1rem;">S</span>
+                            <img src="{{ asset('images/logo.png') }}" alt="Skevva Logo" style="height: 36px; width: auto; object-fit: contain;">
                             Skevva
                         </a>
                         <p>The premium learning platform built for focused, results-driven education. Master new skills at your own pace.</p>
