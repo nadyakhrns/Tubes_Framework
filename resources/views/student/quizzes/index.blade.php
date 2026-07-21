@@ -32,9 +32,13 @@
                                     @endphp
                                     <tr>
                                         <td>
-                                            <a href="{{ route('student.courses.show', $quiz->course) }}" class="text-decoration-none text-dark fw-medium">
-                                                {{ $quiz->course->title }}
-                                            </a>
+                                            @if($quiz->course->slug)
+                                                <a href="{{ route('student.courses.show', $quiz->course) }}" class="text-decoration-none text-dark fw-medium">
+                                                    {{ $quiz->course->title }}
+                                                </a>
+                                            @else
+                                                <span class="text-dark fw-medium">{{ $quiz->course->title }}</span>
+                                            @endif
                                         </td>
                                         <td>{{ $quiz->title }}</td>
                                         <td>{{ $quiz->passing_score }}</td>

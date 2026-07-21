@@ -14,8 +14,9 @@ class MyQuizController extends Controller
     {
         $userId = auth()->id();
 
-        // Get all published quizzes
+        // Get all published quizzes that belong to a valid course
         $quizzes = Quiz::where('is_published', true)
+            ->whereHas('course')
             ->with(['course.enrollments' => function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             }])

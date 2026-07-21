@@ -96,30 +96,30 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="{{ route('admin.courses.edit', $course) }}" class="btn btn-outline-primary" title="Edit">
+                                    <a href="{{ route('admin.courses.edit', $course->slug ?: $course->id) }}" class="btn btn-outline-primary" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     @if($course->approval_status !== 'approved')
-                                        <a href="{{ route('admin.courses.approve', $course) }}" class="btn btn-success" title="Approve">
+                                        <a href="{{ route('admin.courses.approve', $course->slug ?: $course->id) }}" class="btn btn-success" title="Approve">
                                             <i class="bi bi-check-lg"></i>
                                         </a>
                                     @endif
                                     @if($course->approval_status !== 'rejected')
-                                        <a href="{{ route('admin.courses.reject', $course) }}" class="btn btn-danger" title="Reject">
+                                        <a href="{{ route('admin.courses.reject', $course->slug ?: $course->id) }}" class="btn btn-danger" title="Reject">
                                             <i class="bi bi-x-lg"></i>
                                         </a>
                                     @endif
                                     @if($course->is_published)
-                                        <a href="{{ route('admin.courses.unpublish', $course) }}" class="btn btn-outline-secondary" title="Unpublish">
+                                        <a href="{{ route('admin.courses.unpublish', $course->slug ?: $course->id) }}" class="btn btn-outline-secondary" title="Unpublish">
                                             <i class="bi bi-eye-slash"></i>
                                         </a>
                                     @else
-                                        <a href="{{ route('admin.courses.publish', $course) }}" class="btn btn-outline-primary" title="Publish">
+                                        <a href="{{ route('admin.courses.publish', $course->slug ?: $course->id) }}" class="btn btn-outline-primary" title="Publish">
                                             <i class="bi bi-eye"></i>
                                         </a>
                                     @endif
                                 </div>
-                                <form action="{{ route('admin.courses.destroy', $course) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.courses.destroy', $course->slug ?: $course->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this course?')" title="Delete">

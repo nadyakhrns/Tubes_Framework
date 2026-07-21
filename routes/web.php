@@ -23,9 +23,12 @@ use Illuminate\Support\Facades\Route;
 
 // Temporary route to fix missing slugs
 Route::get('/fix-slugs', function () {
-    \App\Models\Course::whereNull('slug')->orWhere('slug', '')->get()->each(function ($course) {
-        $course->slug = \Illuminate\Support\Str::slug($course->title);
-        $course->save();
+    \App\Models\Course::withoutEvents(function () {
+        \App\Models\Course::whereNull('slug')->orWhere('slug', '')->get()->each(function ($course) {
+            $course->slug = \Illuminate\Support\Str::slug($course->title ?: 'course-' . $course->id);
+            if (empty($course->slug)) $course->slug = 'course-' . $course->id;
+            $course->save();
+        });
     });
     return '✅ Slugs fixed successfully! You can now close this tab and refresh your Instructor/Admin panel.';
 });
