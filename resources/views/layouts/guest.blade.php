@@ -18,7 +18,7 @@
         <main class="auth-page">
             <section class="auth-panel">
                 <a href="/" class="auth-brand">
-                    <span class="brand-mark">S</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Skevva Logo" style="height: 40px; width: auto; object-fit: contain;">
                     <span>Skevva</span>
                 </a>
 

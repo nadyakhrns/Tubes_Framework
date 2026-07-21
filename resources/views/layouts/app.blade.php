@@ -54,7 +54,7 @@
     <aside class="app-sidebar">
 
         <a href="{{ route('dashboard') }}" class="brand-link">
-            <span class="brand-mark">S</span>
+            <img src="{{ asset('images/logo.png') }}" alt="Skevva Logo" style="height: 32px; width: auto; object-fit: contain;">
             <span>Skevva</span>
         </a>
 
@@ -111,6 +111,58 @@
 
                     <span>Quizzes</span>
 
+                </a>
+
+            @endif
+
+            @if($role === 'instructor')
+
+                <a href="{{ route('instructor.courses.index') }}"
+                   @class([
+                        'sidebar-link',
+                        'active' => request()->routeIs('instructor.courses.*') && !request()->routeIs('instructor.courses.quizzes.*')
+                   ])>
+
+                    <span>Courses</span>
+
+                </a>
+
+                <a href="{{ route('instructor.quizzes.index') }}"
+                   @class([
+                        'sidebar-link',
+                        'active' => request()->routeIs('instructor.quizzes.*')
+                   ])>
+
+                    <span>Quizzes</span>
+
+                </a>
+
+            @endif
+
+            @if($role === 'student')
+
+                <a href="{{ route('student.courses.index') }}"
+                   @class([
+                        'sidebar-link',
+                        'active' => request()->routeIs('student.courses.*') && !request()->routeIs('student.courses.show')
+                   ])>
+                    <span>Browse Courses</span>
+                </a>
+
+                <a href="{{ route('student.my-courses') }}"
+                   @class([
+                        'sidebar-link',
+                        'active' => request()->routeIs('student.my-courses') || request()->routeIs('student.learning.*') || (request()->routeIs('student.courses.show') && !request()->routeIs('student.quiz.*'))
+                   ])>
+                    <span>My Courses (Riwayat)</span>
+                </a>
+
+                <a href="{{ route('student.my-quizzes') }}"
+                   @class([
+                        'sidebar-link',
+                        'active' => request()->routeIs('student.my-quizzes') || request()->routeIs('student.quiz.*')
+                   ])>
+                    <span>Quizzes</span>
                 </a>
 
             @endif

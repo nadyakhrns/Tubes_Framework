@@ -31,6 +31,34 @@
                         @endforeach
                     </div>
                 </div>
+
+                @if($course->quizzes->isNotEmpty())
+                    <div class="card shadow-sm border-0 mt-3">
+                        <div class="card-header bg-white">
+                            <h6 class="mb-0">Quizzes</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled small mb-0">
+                                @foreach($course->quizzes as $quiz)
+                                    @php
+                                        $quizAttempt = \App\Models\QuizAttempt::where('quiz_id', $quiz->id)->where('user_id', auth()->id())->latest()->first();
+                                    @endphp
+                                    <li class="mb-2">
+                                        @if($quizAttempt)
+                                            <a href="{{ route('student.quiz.result', [$enrollment, $quiz]) }}" class="text-decoration-none text-success">
+                                                <i class="bi bi-check-circle-fill me-1"></i> {{ $quiz->title }} ({{ $quizAttempt->score }})
+                                            </a>
+                                        @else
+                                            <a href="{{ route('student.quiz.show', [$enrollment, $quiz]) }}" class="text-decoration-none text-dark">
+                                                <i class="bi bi-journal-text me-1"></i> {{ $quiz->title }}
+                                            </a>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="col-lg-9">
